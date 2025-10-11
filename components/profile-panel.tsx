@@ -107,4 +107,22 @@ export function ProfilePanel() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name\
+                    <Label htmlFor="name">Full Name</Label>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="notifications">
+              {/* Add notifications content here */}
+            </TabsContent>
+
+            <TabsContent value="security">
+              {/* Add security content here */}
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+    </div>
+  )
+}
