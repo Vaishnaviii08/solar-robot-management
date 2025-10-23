@@ -46,9 +46,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen">
+      <div className="grid grid-cols-[auto_1fr] min-h-screen w-full">
         <AppSidebar />
-        <main className="flex-1 overflow-y-auto bg-muted/20">
+
+        <main className="flex flex-col overflow-y-auto bg-muted/20 w-full">
+          {/* Header */}
           <div className="flex items-center justify-between border-b bg-background px-4 py-3 w-full">
             <div className="flex items-center gap-2">
               <SidebarTrigger className="h-9 w-9">
@@ -56,7 +58,10 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               </SidebarTrigger>
               <h1 className="text-lg font-semibold">Solar Robot Management System</h1>
             </div>
+
+            {/* Notifications + Profile */}
             <div className="flex items-center gap-4">
+              {/* Notifications */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="relative">
@@ -75,7 +80,9 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                       onClick={() => router.push("/dashboard/notifications")}
                     >
                       <div className="font-medium">Maintenance Required</div>
-                      <div className="text-sm text-muted-foreground">Robot Alpha needs brush replacement</div>
+                      <div className="text-sm text-muted-foreground">
+                        Robot Alpha needs brush replacement
+                      </div>
                       <div className="text-xs text-muted-foreground mt-1">2 hours ago</div>
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -83,7 +90,9 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                       onClick={() => router.push("/dashboard/notifications")}
                     >
                       <div className="font-medium">Cleaning Complete</div>
-                      <div className="text-sm text-muted-foreground">Robot Beta finished cleaning Section B</div>
+                      <div className="text-sm text-muted-foreground">
+                        Robot Beta finished cleaning Section B
+                      </div>
                       <div className="text-xs text-muted-foreground mt-1">5 hours ago</div>
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -91,16 +100,23 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                       onClick={() => router.push("/dashboard/notifications")}
                     >
                       <div className="font-medium">Low Battery</div>
-                      <div className="text-sm text-muted-foreground">Robot Alpha battery below 20%</div>
+                      <div className="text-sm text-muted-foreground">
+                        Robot Alpha battery below 20%
+                      </div>
                       <div className="text-xs text-muted-foreground mt-1">1 day ago</div>
                     </DropdownMenuItem>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="justify-center" onClick={() => router.push("/dashboard/notifications")}>
+                  <DropdownMenuItem
+                    className="justify-center"
+                    onClick={() => router.push("/dashboard/notifications")}
+                  >
                     View all notifications
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+
+              {/* Profile */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="rounded-full">
@@ -129,7 +145,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               </DropdownMenu>
             </div>
           </div>
-          <div className="container mx-auto p-4 md:p-6 max-w-full min-h-[calc(100vh-57px)]">{children}</div>
+
+          {/* Main Content */}
+          <div className="flex-1 w-full p-4 md:p-6 min-h-[calc(100vh-57px)]">
+            {children}
+          </div>
         </main>
       </div>
     </SidebarProvider>
@@ -139,9 +159,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 function AppSidebar() {
   const pathname = usePathname()
 
-  const isActive = (path: string) => {
-    return pathname === path
-  }
+  const isActive = (path: string) => pathname === path
 
   return (
     <Sidebar>
@@ -151,6 +169,7 @@ function AppSidebar() {
           <span className="text-lg font-bold">JAGRUT solar bot</span>
         </div>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -161,6 +180,7 @@ function AppSidebar() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild isActive={isActive("/dashboard/control")}>
               <Link href="/dashboard/control">
@@ -169,6 +189,7 @@ function AppSidebar() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild isActive={isActive("/dashboard/diagnostics")}>
               <Link href="/dashboard/diagnostics">
@@ -177,6 +198,7 @@ function AppSidebar() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild isActive={isActive("/dashboard/reports")}>
               <Link href="/dashboard/reports">
@@ -185,6 +207,7 @@ function AppSidebar() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild isActive={isActive("/dashboard/users")}>
               <Link href="/dashboard/users">
@@ -193,6 +216,7 @@ function AppSidebar() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild isActive={isActive("/dashboard/support")}>
               <Link href="/dashboard/support">
@@ -203,6 +227,7 @@ function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
+
       <SidebarFooter className="border-t p-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
