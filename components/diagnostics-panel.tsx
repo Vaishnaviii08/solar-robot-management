@@ -148,9 +148,6 @@ export function DiagnosticsPanel() {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button className="w-full">Schedule New Maintenance</Button>
-              </CardFooter>
             </Card>
           </div>
         </TabsContent>

@@ -39,7 +39,6 @@ export function ControlPanel() {
 
   const handleVerification = () => {
     if (verificationCode === "123456") {
-      // In a real app, this would be a proper verification
       setVerificationOpen(false)
       setVerificationCode("")
 
@@ -89,7 +88,79 @@ export function ControlPanel() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <Card>
+        {/* Manual Control (first card) */}
+        <Card className="flex flex-col h-full">
+          <CardHeader>
+            <CardTitle>Manual Control</CardTitle>
+            <CardDescription>Start, stop, and adjust robot operations in real-time (Admin only)</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-primary" />
+              <span className="text-sm font-medium">This section requires admin verification</span>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="robot-select">Select Robot</Label>
+              <Select defaultValue={selectedRobot} onValueChange={setSelectedRobot}>
+                <SelectTrigger id="robot-select">
+                  <SelectValue placeholder="Select a robot" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="RBT-001">Alpha (RBT-001)</SelectItem>
+                  <SelectItem value="RBT-002">Beta (RBT-002)</SelectItem>
+                  <SelectItem value="RBT-003">Gamma (RBT-003)</SelectItem>
+                  <SelectItem value="RBT-004">Delta (RBT-004)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="rounded-md bg-muted p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className={`h-3 w-3 rounded-full ${isRunning ? "bg-primary" : "bg-red-500"}`}></div>
+                  <span className="font-medium">{isRunning ? "Running" : "Stopped"}</span>
+                </div>
+                <Button
+                  variant={isRunning ? "destructive" : "default"}
+                  size="sm"
+                  onClick={() => handleStartStopRequest(isRunning ? "stop" : "start")}
+                >
+                  {isRunning ? (
+                    <>
+                      <Stop className="mr-2 h-4 w-4" /> Stop
+                    </>
+                  ) : (
+                    <>
+                      <Play className="mr-2 h-4 w-4" /> Start
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+
+            <Separator />
+
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="battery-level">Battery Level</Label>
+                  <span className="text-sm text-muted-foreground">{batteryLevel}%</span>
+                </div>
+                <Progress value={batteryLevel} className="h-2" />
+              </div>
+            </div>
+          </CardContent>
+          <div className="flex-grow" />
+          <CardFooter className="mt-auto">
+            <Button className="w-full" onClick={handleSaveSettings}>
+              <Save className="mr-2 h-4 w-4" /> Save Settings
+            </Button>
+          </CardFooter>
+        </Card>
+
+        {/* Automatic Schedule (second card) */}
+        <Card className="flex flex-col h-full">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -209,78 +280,10 @@ export function ControlPanel() {
               </TabsContent>
             </Tabs>
           </CardContent>
-          <CardFooter>
+          <div className="flex-grow" />
+          <CardFooter className="mt-auto">
             <Button className="w-full" onClick={handleScheduleSave} disabled={!scheduleEnabled}>
               <Check className="mr-2 h-4 w-4" /> Save Schedule
-            </Button>
-          </CardFooter>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Manual Control</CardTitle>
-            <CardDescription>Start, stop, and adjust robot operations in real-time (Admin only)</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium">This section requires admin verification</span>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="robot-select">Select Robot</Label>
-              <Select defaultValue={selectedRobot} onValueChange={setSelectedRobot}>
-                <SelectTrigger id="robot-select">
-                  <SelectValue placeholder="Select a robot" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="RBT-001">Alpha (RBT-001)</SelectItem>
-                  <SelectItem value="RBT-002">Beta (RBT-002)</SelectItem>
-                  <SelectItem value="RBT-003">Gamma (RBT-003)</SelectItem>
-                  <SelectItem value="RBT-004">Delta (RBT-004)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="rounded-md bg-muted p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className={`h-3 w-3 rounded-full ${isRunning ? "bg-primary" : "bg-red-500"}`}></div>
-                  <span className="font-medium">{isRunning ? "Running" : "Stopped"}</span>
-                </div>
-                <Button
-                  variant={isRunning ? "destructive" : "default"}
-                  size="sm"
-                  onClick={() => handleStartStopRequest(isRunning ? "stop" : "start")}
-                >
-                  {isRunning ? (
-                    <>
-                      <Stop className="mr-2 h-4 w-4" /> Stop
-                    </>
-                  ) : (
-                    <>
-                      <Play className="mr-2 h-4 w-4" /> Start
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
-
-            <Separator />
-
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="battery-level">Battery Level</Label>
-                  <span className="text-sm text-muted-foreground">{batteryLevel}%</span>
-                </div>
-                <Progress value={batteryLevel} className="h-2" />
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button className="w-full" onClick={handleSaveSettings}>
-              <Save className="mr-2 h-4 w-4" /> Save Settings
             </Button>
           </CardFooter>
         </Card>
