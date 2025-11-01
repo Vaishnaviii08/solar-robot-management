@@ -66,6 +66,7 @@ export function RobotStatusCard({
         </div>
         {getStatusBadge(status)}
       </CardHeader>
+
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -99,8 +100,14 @@ export function RobotStatusCard({
           </div>
         )}
       </CardContent>
+
+      {/* Updated Control Button */}
       <CardFooter className="flex justify-end">
-        <Button variant="outline" size="sm" onClick={onControlClick} className="px-4">
+        <Button
+          size="sm"
+          onClick={onControlClick}
+          className="w-full bg-blue-500 text-white hover:bg-blue-600"
+        >
           Control
         </Button>
       </CardFooter>

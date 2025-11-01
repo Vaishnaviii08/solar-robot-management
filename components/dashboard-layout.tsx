@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
@@ -13,8 +13,8 @@ import {
   LogOut,
   Menu,
   Settings,
-  Sun,
   Users,
+  X,
 } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -43,20 +43,28 @@ import {
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
+  const [sidebarOpen, setSidebarOpen] = React.useState(true)
 
   return (
     <SidebarProvider>
       <div className="grid grid-cols-[auto_1fr] min-h-screen w-full">
-        <AppSidebar />
+        {sidebarOpen && <AppSidebar onClose={() => setSidebarOpen(false)} />}
 
         <main className="flex flex-col overflow-y-auto bg-muted/20 w-full">
           {/* Header */}
           <div className="flex items-center justify-between border-b bg-background px-4 py-3 w-full">
             <div className="flex items-center gap-2">
-              <SidebarTrigger className="h-9 w-9">
-                <Menu className="h-5 w-5" />
-              </SidebarTrigger>
-              <h1 className="text-lg font-semibold">Solar Robot Management System</h1>
+              {!sidebarOpen && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setSidebarOpen(true)}
+                  className="h-9 w-9"
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+              )}
+              <h1 className="text-2xl font-semibold">Jagrut Solar Bot</h1>
             </div>
 
             {/* Notifications + Profile */}
@@ -156,20 +164,28 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   )
 }
 
-function AppSidebar() {
+function AppSidebar({ onClose }: { onClose: () => void }) {
   const pathname = usePathname()
-
   const isActive = (path: string) => pathname === path
 
   return (
-    <Sidebar>
-      <SidebarHeader className="border-b">
-        <div className="flex items-center gap-2 px-2 py-3">
-          <Sun className="h-6 w-6 text-primary" />
-          <span className="text-lg font-bold">JAGRUT solar bot</span>
+    <Sidebar className="w-56 min-w-[14rem]">
+      {/* Header */}
+      <SidebarHeader className="border-b relative pb-2">
+        <div className="flex items-center justify-between px-1 pt-3 pb-2">
+          <span className="text-lg font-bold tracking-wide">JAGRUT Solar Bot</span>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="h-7 w-7 flex items-center justify-center"
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </div>
       </SidebarHeader>
 
+      {/* Sidebar Menu */}
       <SidebarContent>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -228,6 +244,7 @@ function AppSidebar() {
         </SidebarMenu>
       </SidebarContent>
 
+      {/* Footer */}
       <SidebarFooter className="border-t p-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
